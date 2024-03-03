@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,4 +5,63 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model brands {
+  id             Int        @id @default(autoincrement())
+  wallet_address String?    @db.VarChar
+  chain_name     String?    @db.VarChar
+  created_at     DateTime?  @db.Timestamp(6)
+  name           String?    @db.VarChar
+  secret_key     String?    @db.VarChar
+  assets         assets[]
+  campains       campains[]
+}
+
+model campains {
+  id           Int       @id @default(autoincrement())
+  start_date   DateTime? @db.Timestamp(6)
+  end_date     DateTime? @db.Timestamp(6)
+  campain_name String?   @db.VarChar
+  description  String?   @db.VarChar
+  amaount_xp   Int?
+  brands_id    Int?
+  brands       brands?   @relation(fields: [brands_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_campains.brands_id")
+}
+
+model vox_user {
+  id             Int       @id @default(autoincrement())
+  wallet_address String?   @db.VarChar
+  street_address String?   @db.VarChar
+  created_at     DateTime? @db.Timestamp(6)
+  nft_address    String?   @db.VarChar
+  orders         orders[]
+}
+
+model assets {
+  id              Int       @id @default(autoincrement())
+  quantity        Int?
+  category        String?   @db.VarChar
+  created_at      DateTime? @db.Timestamp(6)
+  description     String?   @db.VarChar
+  weight          Decimal?  @db.Decimal
+  price           Decimal?  @db.Decimal
+  manufacturer    String?   @db.VarChar
+  supplier        String?   @db.VarChar
+  inventoryStatus String?   @db.VarChar
+  brands_id       Int?
+  lastbuy_at      DateTime? @db.Timestamp(6)
+  brands          brands?   @relation(fields: [brands_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_assets.brands_id")
+  orders          orders[]
+}
+
+model orders {
+  id           Int       @id @default(autoincrement())
+  vox_users_id Int?
+  asset_id     Int?
+  to_address   String?   @db.VarChar
+  status       String?   @db.VarChar
+  order_at     DateTime? @db.Timestamp(6)
+  assets       assets?   @relation(fields: [asset_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_orders.asset_id")
+  vox_user     vox_user? @relation(fields: [vox_users_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_orders.vox_users_id")
 }

@@ -1,10 +1,12 @@
 import {
   CanActivate,
   ExecutionContext,
+  HttpException,
+  HttpStatus,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
+import { JsonWebTokenError, JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import { jwtConstants } from '../../core/helpers/constants';
 
@@ -15,18 +17,19 @@ export class AuthGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     const token = this.extractTokenFromHeader(request);
+    console.log(token);
     if (!token) {
+      console.log('no token');
       throw new UnauthorizedException();
     }
     try {
       const payload = await this.jwtService.verifyAsync(token, {
         secret: jwtConstants.secret,
       });
-      // 💡 We're assigning the payload to the request object here
-      // so that we can access it in our route handlers
+      console.log('payload', payload);
       request['user'] = payload;
-    } catch {
-      throw new UnauthorizedException();
+    } catch (e) {
+      throw new HttpException(e.message, HttpStatus.UNAUTHORIZED);
     }
     return true;
   }
