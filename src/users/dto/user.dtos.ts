@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsOptional, Length } from 'class-validator';
+import { IsString, IsOptional, Length, IsPhoneNumber } from 'class-validator';
 
 export class CreateUserDto {
   @ApiProperty({
@@ -19,15 +19,56 @@ export class CreateUserDto {
   @Length(5, 100)
   street_address: string;
 
+
   @ApiProperty({
     required: false,
-    default: '0x32c23bc539400BB79aA7cc2a028Bc21315123',
+    default: 'Some notes here',
   })
   @IsString()
   @IsOptional()
-  nft_address: string;
-}
+  notes: string;
 
+  @ApiProperty({
+    required: false,
+    default: 'twitter_username',
+  })
+  @IsString()
+  @IsOptional()
+  twitter: string;
+
+  @ApiProperty({
+    required: false,
+    default: 'discord_username',
+  })
+  @IsString()
+  @IsOptional()
+  discord: string;
+
+  @ApiProperty({
+    required: false,
+    default: '+1234567890',
+  })
+  @IsString()
+  @IsPhoneNumber()
+  @IsOptional()
+  phone_number: string;
+
+  @ApiProperty({
+    required: false,
+    default: 'John Doe',
+  })
+  @IsString()
+  @IsOptional()
+  name: string;
+
+  @ApiProperty({
+    required: false,
+    default: 'example@gmail.com',
+  })
+  @IsString()
+  @IsOptional()
+  email: string;
+}
 
 export class UpdateUserDto {
   @ApiProperty({
@@ -49,9 +90,50 @@ export class UpdateUserDto {
 
   @ApiProperty({
     required: false,
-    default: '0x32c23bc539400BB79aA7cc2a028Bc21315123',
+    default: 'Some notes here',
   })
   @IsString()
   @IsOptional()
-  nft_address: string;
+  notes: string;
+
+  @ApiProperty({
+    required: false,
+    default: 'twitter_username',
+  })
+  @IsString()
+  @IsOptional()
+  twitter: string;
+
+  @ApiProperty({
+    required: false,
+    default: 'discord_username',
+  })
+  @IsString()
+  @IsOptional()
+  discord: string;
+
+  @ApiProperty({
+    required: false,
+    default: '+1234567890',
+  })
+  @IsString()
+  @IsPhoneNumber()
+  @IsOptional()
+  phone_number: string;
+
+  @ApiProperty({
+    required: false,
+    default: 'John Doe',
+  })
+  @IsString()
+  @IsOptional()
+  name: string;
+
+  @ApiProperty({
+    required: false,
+    default: 'example@gmail.com',
+  })
+  @IsString()
+  @IsOptional()
+  email: string;
 }

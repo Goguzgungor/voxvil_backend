@@ -7,9 +7,10 @@ import { CampainModule } from './campain/campain.module';
 import { BrandsModule } from './brands/brands.module';
 import { OrdersModule } from './orders/orders.module';
 import { AssetsModule } from './assets/assets.module';
+import { SolanaModule } from './solana/solana.module';
 
 @Module({
-  imports: [AuthModule, UsersModule, CampainModule, BrandsModule, OrdersModule, AssetsModule],
+  imports: [AuthModule, UsersModule, CampainModule, BrandsModule, OrdersModule, AssetsModule, SolanaModule],
   controllers: [AppController],
   providers: [AppService],
 })

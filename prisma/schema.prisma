@@ -8,14 +8,15 @@ datasource db {
 }
 
 model brands {
-  id             Int        @id @default(autoincrement())
-  wallet_address String?    @db.VarChar
-  chain_name     String?    @db.VarChar
-  created_at     DateTime?  @db.Timestamp(6)
-  name           String?    @db.VarChar
-  secret_key     String?    @db.VarChar
+  id             Int          @id @default(autoincrement())
+  wallet_address String?      @db.VarChar
+  chain_name     String?      @db.VarChar
+  created_at     DateTime?    @db.Timestamp(6)
+  name           String?      @db.VarChar
+  secret_key     String?      @db.VarChar
   assets         assets[]
   campains       campains[]
+  member_nft     member_nft[]
 }
 
 model campains {
@@ -33,8 +34,13 @@ model vox_user {
   id             Int       @id @default(autoincrement())
   wallet_address String?   @db.VarChar
   street_address String?   @db.VarChar
+  email          String?   @db.VarChar
+  twitter        String?   @db.VarChar
+  discord        String?   @db.VarChar
+  name           String?   @db.VarChar
+  notes          String?   @db.VarChar
+  phone_number   String?   @db.VarChar
   created_at     DateTime? @db.Timestamp(6)
-  nft_address    String?   @db.VarChar
   orders         orders[]
 }
 
@@ -64,4 +70,13 @@ model orders {
   order_at     DateTime? @db.Timestamp(6)
   assets       assets?   @relation(fields: [asset_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_orders.asset_id")
   vox_user     vox_user? @relation(fields: [vox_users_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_orders.vox_users_id")
+}
+
+model member_nft {
+  id         Int       @id @default(autoincrement())
+  address    String?   @db.VarChar
+  created_at DateTime? @db.Timestamp(6)
+  brand_id   Int?
+  user_id    Int?
+  brands     brands?   @relation(fields: [brand_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_member_nft.brand_id")
 }

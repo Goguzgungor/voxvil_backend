@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { AES, enc } from 'crypto-ts';
@@ -16,6 +20,14 @@ export class AuthService {
   async signIn(signInDto: SignInDto): Promise<{ access_token: string }> {
     if (!this.verifyAes(signInDto.wallet_address, signInDto.aes_hashed)) {
       throw new UnauthorizedException();
+    }
+    const user = this.usersService.getUserByWalletAddress(
+      signInDto.wallet_address,
+    );
+    if (!user) {
+      throw new NotFoundException(
+        signInDto.wallet_address + ' wallet address not found',
+      );
     }
     const payload = {
       sub: 'This is a token for voxvil_backend',
