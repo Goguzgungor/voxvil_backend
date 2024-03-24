@@ -25,22 +25,22 @@ model campains {
   end_date     DateTime? @db.Timestamp(6)
   campain_name String?   @db.VarChar
   description  String?   @db.VarChar
-  amaount_xp   Int?
+  amount_xp    Int?
   brands_id    Int?
   brands       brands?   @relation(fields: [brands_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_campains.brands_id")
 }
 
 model vox_user {
   id             Int       @id @default(autoincrement())
-  wallet_address String?   @db.VarChar
+  wallet_address String?   @unique(map: "vox_user_pk") @db.VarChar
   street_address String?   @db.VarChar
-  email          String?   @db.VarChar
-  twitter        String?   @db.VarChar
+  created_at     DateTime? @db.Timestamp(6)
   discord        String?   @db.VarChar
+  email          String?   @db.VarChar
   name           String?   @db.VarChar
   notes          String?   @db.VarChar
   phone_number   String?   @db.VarChar
-  created_at     DateTime? @db.Timestamp(6)
+  twitter        String?   @db.VarChar
   orders         orders[]
 }
 
