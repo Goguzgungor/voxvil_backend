@@ -67,7 +67,7 @@ export class UsersService {
   async getAllMembers() {
     return await this.prismaService.$queryRawUnsafe(`
     select mn.address nft_adrress, b.chain_name,
-b.name as brand_name, vu.*  from member_nft mn
+b.name as brand_name,b.id as brand_id, vu.*  from member_nft mn
 join brands b on b.id = mn.brand_id
 join vox_user vu on mn.user_id = vu.id;`);
   }
